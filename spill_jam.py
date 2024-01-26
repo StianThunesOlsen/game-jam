@@ -1,6 +1,7 @@
 import pygame 
 import random 
 import math
+import numpy as np
 
 class Spillobjekt: 
     def __init__(self, start_x, start_y):
@@ -24,7 +25,7 @@ class Bil(Spillobjekt):
 
     def tegn(self):
         pygame.draw.rect(screen, self.color, self.rect)
-        self.rect = pygame.Rect(self.x - self.size, self.y - self.size, self.size*7, self.size*)
+        self.rect = pygame.Rect(self.x - self.size, self.y - self.size, self.size*7, self.size*10)
 
     def oppdater(self):
         keys = pygame.key.get_pressed()
@@ -33,6 +34,16 @@ class Bil(Spillobjekt):
         if keys[pygame.K_RIGHT]:
             self.x += self.fart 
 
+class Hinder: 
+    def __init__ (self, h_x, h_y):
+        self.x = h_x
+        self.y = h_y
+        self.b = 20
+        self.h = 35
+        self.rect = pygame.Rect(self.x - self.b/2, self.y, self.b, self.h)
+
+    def oppdater(self):
+        self.rect = pygame.Rect(self.x - self.b/2, self.y, self.b, self.h)
 
 
 pygame.init()
@@ -43,6 +54,15 @@ running = True
 
 bil = Bil(screen.get_width()/2, screen.get_height()/1.3)
 
+
+hinder = []
+
+for x in range(5):
+    spacing = np.linspace(0, screen.get_width(), 5)[x]
+    hinder.append(Hinder(screen.get_width()/2 - 10, screen.get_height()/1000 + spacing))
+
+
+
 while running:
     # Avslutter løkken
     for event in pygame.event.get():
@@ -50,10 +70,17 @@ while running:
             running = False
 
     # Fyller skjermen med hvit farge
-    screen.fill("grey")
+    screen.fill("grey")    
+
+    for x in hinder:
+        pygame.draw.rect(screen, "yellow", pygame.Rect(x.x, x.y, x.b, x.h))
+        x.y += 5
+        if x.y > screen.get_height(): 
+            x.y = screen.get_width()/1000 
+        x.oppdater()
 
     bil.tegn()
-    bil.oppdater()    
+    bil.oppdater()
 
      # Oppdaterer hele skjermen
     pygame.display.flip()
