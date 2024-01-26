@@ -1,8 +1,6 @@
 import pygame 
-import random as randint
+import random 
 import math
-import numpy as np
-
 
 class Spillobjekt: 
     def __init__(self, start_x, start_y):
@@ -11,6 +9,7 @@ class Spillobjekt:
         self.color = "gray"
         self.size = 15
         self.rect = pygame.Rect(self.x - self.size, self.y - self.size, self.size*2, self.size*2)
+
 
 
 class Bil(Spillobjekt):
@@ -25,8 +24,7 @@ class Bil(Spillobjekt):
 
     def tegn(self):
         pygame.draw.rect(screen, self.color, self.rect)
-        self.rect = pygame.Rect(self.x - self.size, self.y - self.size, self.size*7, self.size*10)
-
+        self.rect = pygame.Rect(self.x - self.size, self.y - self.size, self.size*7, self.size*)
 
     def oppdater(self):
         keys = pygame.key.get_pressed()
@@ -34,30 +32,6 @@ class Bil(Spillobjekt):
             self.x -= self.fart 
         if keys[pygame.K_RIGHT]:
             self.x += self.fart 
-
-
-class Søyle:
-    def __init__ (self, sø_x, sø_y):
-        self.x = sø_x
-        self.y = sø_y
-        self.h = randint(250, 400)
-        self.b = 20
-        self.rect = pygame.Rect(self.x, self.y, self.b, self.h)
-
-    def oppdater(self):
-        self.rect = pygame.Rect(self.x, self.y, self.b, self.h)
-
-
-class Søyle2:
-    def __init__(self, sø2x):
-        self.x = sø2x
-        self.y = randint(400, 500)
-        self.h = 200
-        self.b = 20
-        self.rect = pygame.Rect(self.x, self.y, self.b, self.h)
-    
-    def oppdater(self):
-        self.rect = pygame.Rect(self.x, self.y, self.b, self.h)
 
 
 
@@ -68,17 +42,6 @@ clock = pygame.time.Clock()
 running = True
 
 bil = Bil(screen.get_width()/2, screen.get_height()/1.3)
-
-søyleliste = []
-søyleliste2 = []
-
-for a in range(4):
-    spacing = np.linspace(0, screen.get_width(), 5)[a]
-    søyleliste.append(Søyle(screen.get_width() + spacing, screen.get_height()/1000))
-
-for b in range(4):
-    spacing2 = np.linspace(0, screen.get_width(), 5)[b]
-    søyleliste2.append(Søyle2(screen.get_width() + spacing2))
 
 while running:
     # Avslutter løkken
