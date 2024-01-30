@@ -45,12 +45,17 @@ class Linje:
     def oppdater(self):
         self.rect = pygame.Rect(self.x - self.b/2, self.y, self.b, self.h)
 
+
 class Hinder:
     def __init__ (self, h_x, h_y):
         self.x = h_x
         self.y = h_y
         self.b = 20
         self.h = 35
+        self.rect = pygame.Rect(self.x - self.b/2, self.y, self.b, self.h)
+
+    def oppdater(self):
+        self.rect = pygame.Rect(self.x - self.b/2, self.y, self.b, self.h)
 
 
 
@@ -64,12 +69,15 @@ bil = Bil(screen.get_width()/2, screen.get_height()/1.3)
 
 
 linje = []
+hinder = []
 
 for x in range(5):
     spacing = np.linspace(0, screen.get_width(), 5)[x]
     linje.append(Linje(screen.get_width()/2 - 10, screen.get_height()/1000 + spacing))
 
-
+for x in range(2):
+    spacing2 = np.linspace(0, screen.get_width(), 2)[x]
+    hinder.append(Hinder(screen.get_width()/4 - 10, screen.get_height()/1000 + spacing2))
 
 while running:
     # Avslutter løkken
@@ -83,6 +91,13 @@ while running:
     for x in linje:
         pygame.draw.rect(screen, "yellow", pygame.Rect(x.x, x.y, x.b, x.h))
         x.y += 5
+        if x.y > screen.get_height(): 
+            x.y = screen.get_width()/1000 
+        x.oppdater()
+
+    for x in hinder:
+        pygame.draw.rect(screen, "yellow", pygame.Rect(x.x, x.y, x.b, x.h))
+        x.y += 2
         if x.y > screen.get_height(): 
             x.y = screen.get_width()/1000 
         x.oppdater()
