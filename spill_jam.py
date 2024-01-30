@@ -1,7 +1,8 @@
-import pygame 
-import random 
+import pygame
+from random import randint  
 import math
 import numpy as np
+import time 
 
 class Spillobjekt: 
     def __init__(self, start_x, start_y):
@@ -34,6 +35,7 @@ class Bil(Spillobjekt):
         if keys[pygame.K_RIGHT]:
             self.x += self.fart 
 
+
 class Linje: 
     def __init__ (self, h_x, h_y):
         self.x = h_x
@@ -50,8 +52,8 @@ class Hinder:
     def __init__ (self, h_x, h_y):
         self.x = h_x
         self.y = h_y
-        self.b = 20
-        self.h = 35
+        self.b = randint(10, 50)
+        self.h = randint(10, 50)
         self.rect = pygame.Rect(self.x - self.b/2, self.y, self.b, self.h)
 
     def oppdater(self):
@@ -75,9 +77,17 @@ for x in range(5):
     spacing = np.linspace(0, screen.get_width(), 5)[x]
     linje.append(Linje(screen.get_width()/2 - 10, screen.get_height()/1000 + spacing))
 
-for x in range(2):
-    spacing2 = np.linspace(0, screen.get_width(), 2)[x]
-    hinder.append(Hinder(screen.get_width()/4 - 10, screen.get_height()/1000 + spacing2))
+for x in range(5):
+    #spacing2 = np.linspace(0, screen.get_width(), 5)[x]
+    hinder.append(Hinder(randint(10, screen.get_width()), -randint(10, 600)))
+
+start_tid = time.time()
+
+score = pygame.font.SysFont("arial", int(screen.get_height()/30))
+
+
+
+
 
 while running:
     # Avslutter løkken
@@ -86,7 +96,10 @@ while running:
             running = False
 
     # Fyller skjermen med hvit farge
-    screen.fill("grey")    
+    screen.fill("grey")   
+
+    slutt_tid = round(time.time() - start_tid, 2)
+    print(slutt_tid)
 
     for x in linje:
         pygame.draw.rect(screen, "yellow", pygame.Rect(x.x, x.y, x.b, x.h))
@@ -96,14 +109,19 @@ while running:
         x.oppdater()
 
     for x in hinder:
-        pygame.draw.rect(screen, "yellow", pygame.Rect(x.x, x.y, x.b, x.h))
-        x.y += 2
+        pygame.draw.rect(screen, "red", pygame.Rect(x.x, x.y, x.b, x.h))
+        x.y += 3
         if x.y > screen.get_height(): 
             x.y = screen.get_width()/1000 
+            x.x = randint(10, screen.get_width())
         x.oppdater()
 
     bil.tegn()
     bil.oppdater()
+
+    tekst = score.render(str(slutt_tid), True, "black")
+    tekst_rect = tekst.get_rect(center = (screen.get_width()/10, screen.get_height()/20))
+    screen.blit(tekst, tekst_rect)
 
      # Oppdaterer hele skjermen
     pygame.display.flip()
