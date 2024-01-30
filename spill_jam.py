@@ -34,7 +34,7 @@ class Bil(Spillobjekt):
         if keys[pygame.K_RIGHT]:
             self.x += self.fart 
 
-class Hinder: 
+class Linje: 
     def __init__ (self, h_x, h_y):
         self.x = h_x
         self.y = h_y
@@ -44,6 +44,14 @@ class Hinder:
 
     def oppdater(self):
         self.rect = pygame.Rect(self.x - self.b/2, self.y, self.b, self.h)
+
+class Hinder:
+    def __init__ (self, h_x, h_y):
+        self.x = h_x
+        self.y = h_y
+        self.b = 20
+        self.h = 35
+
 
 
 pygame.init()
@@ -55,11 +63,11 @@ running = True
 bil = Bil(screen.get_width()/2, screen.get_height()/1.3)
 
 
-hinder = []
+linje = []
 
 for x in range(5):
     spacing = np.linspace(0, screen.get_width(), 5)[x]
-    hinder.append(Hinder(screen.get_width()/2 - 10, screen.get_height()/1000 + spacing))
+    linje.append(Linje(screen.get_width()/2 - 10, screen.get_height()/1000 + spacing))
 
 
 
@@ -72,7 +80,7 @@ while running:
     # Fyller skjermen med hvit farge
     screen.fill("grey")    
 
-    for x in hinder:
+    for x in linje:
         pygame.draw.rect(screen, "yellow", pygame.Rect(x.x, x.y, x.b, x.h))
         x.y += 5
         if x.y > screen.get_height(): 
