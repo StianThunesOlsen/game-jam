@@ -153,14 +153,14 @@ while running:
             pygame.draw.rect(screen, "yellow", pygame.Rect(x.x, x.y, x.b, x.h))
             x.y += 5
             if x.y > screen.get_height(): 
-                x.y = screen.get_width()/1000 
+                x.y = screen.get_width()/1000
             x.oppdater()
 
         for x in hinder:
             pygame.draw.rect(screen, "red", pygame.Rect(x.x, x.y, x.b, x.h))
             x.y += 3
             if x.y > screen.get_height(): 
-                x.y = screen.get_width()/1000 
+                x.y = screen.get_width()/1000
                 x.x = randint(10, screen.get_width())
             x.oppdater()
 
@@ -170,9 +170,9 @@ while running:
         for x in hinder:
             if pygame.Rect.colliderect(x.rect, bil.rect):
                 for x in hinder:
-                    x.y = screen.get_width()/10000
+                    x.y = -randint(10, 500)
                     x.x = randint(10, screen.get_width())
-                bil.tegn()
+                bil = Bil(screen.get_width()/2, screen.get_height()/1.3)
                 ingame = False 
                 slutt = True
                 tid = slutt_tid
