@@ -25,7 +25,7 @@ class Bil(Spillobjekt):
         self.image = pygame.image.load("bil.png")
         self.image = pygame.transform.scale(self.image, (self.size*7, self.size*10))
         self.rect = self.image.get_rect(center=(self.x, self.y))
-
+        
     def tegn(self):
         screen.blit(self.image, self.rect.topleft)
         """
@@ -103,7 +103,7 @@ for x in range(5):
 
 start_tid = time.time()
 
-score = pygame.font.SysFont("arial", int(screen.get_height()/30))
+score_font = pygame.font.SysFont("arial", int(screen.get_height()/30))
 
 
 while running:
@@ -112,14 +112,16 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        if pygame.key.get_pressed()[pygame.K_RETURN] and starting:
+        if pygame.key.get_pressed()[pygame.K_RETURN] and starting and (slutt == False):
             print("gyvy")
             starting = False
+            slutt = False
             ingame = True
             inputword = ""
+            start_tid = time.time()
             break
 
-        if pygame.key.get_pressed()[pygame.K_RETURN] and ingame == True:
+        if pygame.key.get_pressed()[pygame.K_RETURN] and ingame == False:
             print("gyvy")
             starting = True
             slutt = False
@@ -167,17 +169,22 @@ while running:
 
         for x in hinder:
             if pygame.Rect.colliderect(x.rect, bil.rect):
+                for x in hinder:
+                    x.y = screen.get_width()/10000
+                    x.x = randint(10, screen.get_width())
+                bil.tegn()
                 ingame = False 
                 slutt = True
+                tid = slutt_tid
 
-        tekst = score.render(str(slutt_tid), True, "black")
+        tekst = score_font.render(str(slutt_tid), True, "black")
         tekst_rect = tekst.get_rect(center = (screen.get_width()/10, screen.get_height()/20))
         screen.blit(tekst, tekst_rect)
 
     
     if slutt: 
         # Skriver ut tittel på spillet 
-        tekst_start3 = font_start3.render(f"di rekord: {score}", True, "blue")
+        tekst_start3 = font_start3.render(f"din rekord: {round(tid, 2)} sek", True, "blue")
         tekst_rect_start3 = tekst_start3.get_rect(center = (screen.get_width()/2, screen.get_height()/3))
         screen.blit(tekst_start3,tekst_rect_start3)
 
